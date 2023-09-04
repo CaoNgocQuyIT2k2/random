@@ -8,7 +8,8 @@
     <form id="nameForm">
         <label for="names">Nhập các tên (cách nhau bằng dấu phẩy):</label>
         <input type="text" id="names" style="width: 600px;" required>
-        <input type="submit" value="Chia Đội">
+        <input type="button" value="Chia Đội Ngẫu Nhiên" id="randomTeamButton">
+
     </form>
     <h2>Kết quả:</h2>
     <div id="teamA">
@@ -63,6 +64,51 @@
                 teamList.appendChild(listItem);
             });
         }
+
+        // Thêm sự kiện click cho nút "Chia Đội Ngẫu Nhiên"
+document.getElementById('randomTeamButton').addEventListener('click', function () {
+    const namesInput = document.getElementById('names');
+    const names = namesInput.value.split(',').map(name => name.trim());
+
+    // Loại bỏ các tên trống
+    const validNames = names.filter(name => name !== '');
+
+    if (validNames.length < 2) {
+        alert('Vui lòng nhập ít nhất 2 tên.');
+        return;
+    }
+
+    // Sử dụng hàm shuffle để xáo trộn mảng validNames ngẫu nhiên
+    const shuffledNames = shuffleArray(validNames);
+
+    // Chia đều thành 2 đội từ mảng đã xáo trộn
+    const teamA = [];
+    const teamB = [];
+    let isAddingToTeamA = true;
+
+    shuffledNames.forEach(name => {
+        if (isAddingToTeamA) {
+            teamA.push(name);
+        } else {
+            teamB.push(name);
+        }
+        isAddingToTeamA = !isAddingToTeamA;
+    });
+
+    // Hiển thị kết quả
+    displayTeam('teamA', teamA);
+    displayTeam('teamB', teamB);
+});
+
+// Hàm xáo trộn mảng ngẫu nhiên
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
     </script>
 </body>
 </html>
