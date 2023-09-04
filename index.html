@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chia Đội</title>
+</head>
+<body>
+    <h1>Chia đều thành 2 đội</h1>
+    <form id="nameForm">
+        <label for="names">Nhập các tên (cách nhau bằng dấu phẩy):</label>
+        <input type="text" id="names" style="width: 600px;" required>
+        <input type="submit" value="Chia Đội">
+    </form>
+    <h2>Kết quả:</h2>
+    <div id="teamA">
+        <h3>Đội A:</h3>
+        <ul></ul>
+    </div>
+    <div id="teamB">
+        <h3>Đội B:</h3>
+        <ul></ul>
+    </div>
+
+    <script>
+        document.getElementById('nameForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const namesInput = document.getElementById('names');
+            const names = namesInput.value.split(',').map(name => name.trim());
+
+            // Loại bỏ các tên trống
+            const validNames = names.filter(name => name !== '');
+
+            if (validNames.length < 2) {
+                alert('Vui lòng nhập ít nhất 2 tên.');
+                return;
+            }
+
+            // Chia đều thành 2 đội
+            const teamA = [];
+            const teamB = [];
+            let isAddingToTeamA = true;
+
+            validNames.forEach(name => {
+                if (isAddingToTeamA) {
+                    teamA.push(name);
+                } else {
+                    teamB.push(name);
+                }
+                isAddingToTeamA = !isAddingToTeamA;
+            });
+
+            // Hiển thị kết quả
+            displayTeam('teamA', teamA);
+            displayTeam('teamB', teamB);
+        });
+
+        // Hàm hiển thị đội
+        function displayTeam(teamId, team) {
+            const teamList = document.querySelector(`#${teamId} ul`);
+            teamList.innerHTML = '';
+            team.forEach(name => {
+                const listItem = document.createElement('li');
+                listItem.textContent = name;
+                teamList.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+</html>
